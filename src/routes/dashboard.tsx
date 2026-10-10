@@ -1,25 +1,17 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { SiteNav } from "@/components/SiteNav";
 import { useAuth, ROLE_LABEL } from "@/hooks/useAuth";
 import { ShieldCheck, Building2, Wrench, User as UserIcon, MapPin, AlertTriangle, Calendar, FileText } from "lucide-react";
+import { usePageMeta } from "@/lib/page-meta";
 
-export const Route = createFileRoute("/dashboard")({
-  head: () => ({
-    meta: [
-      { title: "Dashboard · SahayogBhopal" },
-      { name: "description", content: "Your SahayogBhopal control panel — role-specific views for citizens, officers and department admins." },
-    ],
-  }),
-  component: DashboardPage,
-});
-
-function DashboardPage() {
+export function DashboardPage() {
+  usePageMeta("Dashboard · SahayogBhopal", "Your SahayogBhopal control panel — role-specific views for citizens, officers and department admins.");
   const { user, role, department, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && !user) navigate({ to: "/auth" });
+    if (!loading && !user) navigate("/auth");
   }, [loading, user, navigate]);
 
   if (loading || !user || !role) {

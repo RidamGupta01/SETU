@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -6,16 +6,7 @@ import { SiteNav } from "@/components/SiteNav";
 import { MapPin, ShieldCheck, Building2, Wrench, User as UserIcon, ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { DEPARTMENTS } from "@/lib/bhopal-data";
 import { api, setToken } from "@/lib/api";
-
-export const Route = createFileRoute("/auth")({ 
-  head: () => ({
-    meta: [
-      { title: "Sign in · SahayogBhopal" },
-      { name: "description", content: "Sign in or create a SahayogBhopal citizen or officer account." },
-    ],
-  }),
-  component: AuthPage,
-});
+import { usePageMeta } from "@/lib/page-meta";
 
 type RoleChoice = "citizen" | "officer" | "dept_admin";
 
@@ -53,7 +44,8 @@ const ROLE_TIERS: {
   },
 ];
 
-function AuthPage() {
+export function AuthPage() {
+  usePageMeta("Sign in · SahayogBhopal", "Sign in or create a SahayogBhopal citizen or officer account.");
   const navigate = useNavigate();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [step, setStep] = useState<1 | 2>(1);
@@ -70,7 +62,7 @@ function AuthPage() {
   // Auto-redirect if already logged in
   useEffect(() => {
     if (!loading && user) {
-      navigate({ to: "/dashboard" });
+      navigate("/dashboard");
     }
   }, [user, loading, navigate]);
 

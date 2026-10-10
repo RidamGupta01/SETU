@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { SiteNav } from "@/components/SiteNav";
 import { useAuth } from "@/hooks/useAuth";
@@ -13,18 +12,10 @@ import {
   ArrowRightLeft, 
   UserCheck 
 } from "lucide-react";
+import { usePageMeta } from "@/lib/page-meta";
 
-export const Route = createFileRoute("/analytics")({
-  head: () => ({
-    meta: [
-      { title: "AI Routing Accuracy Analytics · SahayogBhopal" },
-      { name: "description", content: "Real-time accuracy and override reports for the AI photo-analysis and routing engine." },
-    ],
-  }),
-  component: AnalyticsPage,
-});
-
-function AnalyticsPage() {
+export function AnalyticsPage() {
+  usePageMeta("AI Routing Accuracy Analytics · SahayogBhopal", "Real-time accuracy and override reports for the AI photo-analysis and routing engine.");
   const { user } = useAuth();
 
   // Queries

@@ -1,4 +1,5 @@
-export const API_URL = import.meta.env.VITE_API_URL || (typeof window !== 'undefined' ? `${window.location.protocol}//${window.location.hostname}:5000/api` : 'http://localhost:5000/api');
+export const API_URL = import.meta.env.VITE_API_URL || "/api";
+export const API_ORIGIN = API_URL.startsWith("http") ? API_URL.replace(/\/api\/?$/, "") : "";
 
 export function getToken() {
   return localStorage.getItem('token');
@@ -14,9 +15,7 @@ export function removeToken() {
 
 async function fetchWithAuth(url: string, options: RequestInit = {}) {
   const token = getToken();
-  const headers: HeadersInit = {
-    ...options.headers,
-  };
+  const headers: Record<string, string> = Object.fromEntries(new Headers(options.headers).entries());
   
   // Only set application/json if it's not FormData (FormData sets its own boundary)
   if (!(options.body instanceof FormData)) {

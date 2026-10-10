@@ -1,17 +1,17 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import { api, API_URL } from "@/lib/api";
+import { api, API_ORIGIN } from "@/lib/api";
 import { SiteNav } from "@/components/SiteNav";
 import { BhopalMap } from "@/components/BhopalMap";
 import { BHOPAL_AREAS, aqiColor, useLiveBhopalData } from "@/lib/bhopal-data";
+import { usePageMeta } from "@/lib/page-meta";
 import heroImg from "@/assets/bhopal-hero.jpg";
 import { AlertTriangle, Wind, Route as RouteIcon, Users, ArrowRight, Activity } from "lucide-react";
 
-export const Route = createFileRoute("/")({ component: Home });
-
-function Home() {
+export function Home() {
+  usePageMeta("SahayogBhopal — Unified Civic Coordination for Bhopal", "Live map of Bhopal's roadworks, pollution and citizen reports. One platform for citizens, PWD, BMC, Traffic and Pollution Board.");
   const qc = useQueryClient();
   const liveAreas = useLiveBhopalData();
   const [mapFilters, setMapFilters] = useState({
@@ -23,8 +23,7 @@ function Home() {
   // Socket.io integration for real-time updates
   useEffect(() => {
     // Extract base URL from API_URL (remove /api)
-    const baseUrl = API_URL.replace('/api', '');
-    const socket = io(baseUrl);
+    const socket = io(API_ORIGIN || undefined);
 
     socket.on('ISSUE_CREATED', () => {
       qc.invalidateQueries({ queryKey: ["reports-summary"] });

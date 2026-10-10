@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { api, API_URL } from "@/lib/api";
+import { api, API_ORIGIN } from "@/lib/api";
 import { io } from "socket.io-client";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -107,8 +107,7 @@ export function QuickReportWidget() {
 
   // Socket.io integration for async AI analysis updates
   useEffect(() => {
-    const baseUrl = API_URL.replace('/api', '');
-    const socket = io(baseUrl);
+    const socket = io(API_ORIGIN || undefined);
 
     socket.on('complaint:analyzed', async (data) => {
       if (submittedComplaint && data.complaintId === submittedComplaint._id) {

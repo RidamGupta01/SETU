@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { SiteNav } from "@/components/SiteNav";
 import { StatusPill } from "./index";
@@ -8,18 +7,10 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { AlertTriangle, Plus } from "lucide-react";
 import { api } from "@/lib/api";
+import { usePageMeta } from "@/lib/page-meta";
 
-export const Route = createFileRoute("/coordination")({
-  head: () => ({
-    meta: [
-      { title: "Department coordination · SahayogBhopal" },
-      { name: "description", content: "Timeline of every department's roadworks so PWD, BMC, Traffic and others avoid clashing on the same street." },
-    ],
-  }),
-  component: CoordinationPage,
-});
-
-function CoordinationPage() {
+export function CoordinationPage() {
+  usePageMeta("Department coordination · SahayogBhopal", "Timeline of every department's roadworks so PWD, BMC, Traffic and others avoid clashing on the same street.");
   const { user, isPrivileged } = useAuth();
   const qc = useQueryClient();
   const [showForm, setShowForm] = useState(false);

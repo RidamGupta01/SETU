@@ -1,10 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { SiteNav } from "@/components/SiteNav";
 import { useAuth } from "@/hooks/useAuth";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { api, API_URL } from "@/lib/api";
+import { api, API_URL, API_ORIGIN } from "@/lib/api";
+import { usePageMeta } from "@/lib/page-meta";
 import { io } from "socket.io-client";
 import { 
   AlertOctagon, 
@@ -21,19 +21,10 @@ import {
   Sparkles
 } from "lucide-react";
 
-export const Route = createFileRoute("/reports")({
-  head: () => ({
-    meta: [
-      { title: "Civic Complaints Queue & SLA Tracker · SahayogBhopal" },
-      { name: "description", content: "Citizen complaints lifecycle, department queues, SLA tracking, and audit trails." },
-    ],
-  }),
-  component: ComplaintsPage,
-});
-
 const STATUSES = ["Received", "Assigned", "In Progress", "Resolved", "Rejected"] as const;
 
-function ComplaintsPage() {
+export function ComplaintsPage() {
+  usePageMeta("Civic Complaints Queue & SLA Tracker · SahayogBhopal", "Citizen complaints lifecycle, department queues, SLA tracking, and audit trails.");
   const { user, isPrivileged } = useAuth();
   const qc = useQueryClient();
   const [activeTab, setActiveTab] = useState<"complaints" | "triage" | "audit">("complaints");
@@ -60,8 +51,7 @@ function ComplaintsPage() {
 
   // Socket.io integration
   useEffect(() => {
-    const baseUrl = API_URL.replace('/api', '');
-    const socket = io(baseUrl);
+    const socket = io(API_ORIGIN || undefined);
 
     socket.on('complaint:created', (data) => {
       qc.invalidateQueries({ queryKey: ["complaints"] });
@@ -329,9 +319,9 @@ function ComplaintsPage() {
                             <td className="px-4 py-4">
                               <div className="flex items-start gap-3">
                                 {c.photoUrl ? (
-                                  <a href={`${API_URL.replace('/api', '')}${c.photoUrl}`} target="_blank" rel="noreferrer" className="shrink-0">
+                                  <a href={`${API_ORIGIN}${c.photoUrl}`} target="_blank" rel="noreferrer" className="shrink-0">
                                     <img 
-                                      src={`${API_URL.replace('/api', '')}${c.photoUrl}`} 
+                                      src={`${API_ORIGIN}${c.photoUrl}`}
                                       alt="" 
                                       className="h-12 w-12 rounded-md border border-border object-cover" 
                                     />
@@ -447,9 +437,9 @@ function ComplaintsPage() {
                     {activeDetails.complaint.photoUrl && (
                       <div>
                         <h4 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">Attached Photo</h4>
-                        <a href={`${API_URL.replace('/api', '')}${activeDetails.complaint.photoUrl}`} target="_blank" rel="noreferrer">
+                        <a href={`${API_ORIGIN}${activeDetails.complaint.photoUrl}`} target="_blank" rel="noreferrer">
                           <img 
-                            src={`${API_URL.replace('/api', '')}${activeDetails.complaint.photoUrl}`} 
+                            src={`${API_ORIGIN}${activeDetails.complaint.photoUrl}`}
                             alt="Complaint attachment" 
                             className="max-h-48 w-full rounded-lg border border-border object-cover hover:opacity-90 transition-opacity" 
                           />
@@ -806,7 +796,7 @@ function TriageCard({ complaint, departments, qc }: { complaint: any; department
         
         {complaint.photoUrl && (
           <img 
-            src={`${API_URL.replace('/api', '')}${complaint.photoUrl}`} 
+            src={`${API_ORIGIN}${complaint.photoUrl}`}
             alt="Complaint" 
             className="h-40 w-full object-cover rounded-lg border border-border" 
           />

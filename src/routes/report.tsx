@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { Camera, X, MapPin } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
@@ -6,20 +6,12 @@ import { SiteNav } from "@/components/SiteNav";
 import { BHOPAL_AREAS, CATEGORIES } from "@/lib/bhopal-data";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
-
-export const Route = createFileRoute("/report")({
-  head: () => ({
-    meta: [
-      { title: "Report an issue · SahayogBhopal" },
-      { name: "description", content: "Report potholes, pollution, waterlogging or blockages anywhere in Bhopal." },
-    ],
-  }),
-  component: ReportPage,
-});
+import { usePageMeta } from "@/lib/page-meta";
 
 const BHOPAL_CENTER: [number, number] = [23.2599, 77.4126];
 
-function ReportPage() {
+export function ReportPage() {
+  usePageMeta("Report an issue · SahayogBhopal", "Report potholes, pollution, waterlogging or blockages anywhere in Bhopal.");
   const { user, loading } = useAuth();
   const nav = useNavigate();
   const [form, setForm] = useState({
@@ -105,7 +97,7 @@ function ReportPage() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!user) { nav({ to: "/auth" }); return; }
+    if (!user) { nav("/auth"); return; }
     if (!position) {
       toast.error("Please click on the map or click 'Use GPS' to specify the location.");
       return;
@@ -127,7 +119,7 @@ function ReportPage() {
       await api.complaints.create(formData);
       
       toast.success("Complaint filed successfully — auto-assigned and logged!");
-      nav({ to: "/reports" });
+      nav("/reports");
     } catch (err: any) {
       toast.error(err.message || "Failed to submit complaint");
     } finally {

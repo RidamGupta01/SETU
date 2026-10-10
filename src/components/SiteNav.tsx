@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, NavLink as RouterNavLink } from "react-router-dom";
 import { useAuth, ROLE_LABEL } from "@/hooks/useAuth";
 import { MapPin, LogOut } from "lucide-react";
 
@@ -63,12 +63,16 @@ export function SiteNav() {
 
 function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
   return (
-    <Link
+    <RouterNavLink
       to={to}
-      className="rounded-md px-3 py-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-primary"
-      activeProps={{ className: "rounded-md px-3 py-1.5 bg-muted text-primary font-semibold" }}
+      end={to === "/"}
+      className={({ isActive }) =>
+        `rounded-md px-3 py-1.5 transition-colors hover:bg-muted hover:text-primary ${
+          isActive ? "bg-muted font-semibold text-primary" : "text-muted-foreground"
+        }`
+      }
     >
       {children}
-    </Link>
+    </RouterNavLink>
   );
 }
