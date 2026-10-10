@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const { requireAuth } = require('../middleware/authMiddleware');
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'hackathon-secret', {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '30d',
   });
 };

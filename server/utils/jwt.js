@@ -15,7 +15,7 @@ export const sendTokenResponse = async (user, statusCode, req, res) => {
       role: roleName,
       department: deptCode
     },
-    process.env.JWT_SECRET || 'setu_super_secret_jwt_key_2026',
+    process.env.JWT_SECRET,
     {
       expiresIn: '15m',
     }
