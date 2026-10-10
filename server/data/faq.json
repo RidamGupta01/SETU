@@ -1,0 +1,30 @@
+[
+  {
+    "question": "What is the standard resolution time (SLA) for citizen complaints?",
+    "answer": "All complaints in SahayogBhopal have a standard resolution SLA (Service Level Agreement) of 7 days. If a complaint is not resolved or rejected within 7 days, it is automatically flagged as an SLA violation, and nodal admins are alerted."
+  },
+  {
+    "question": "How does the automatic routing (auto-assignment) of complaints work?",
+    "answer": "When you file a complaint, SahayogBhopal checks for any nearby active roadwork permits within 500 meters of the coordinates. If a permit is found, the complaint is routed to the department managing that permit (e.g. PWD, BMC, Discom). If no permits are nearby, the system maps the coordinates to the containing municipal Ward and assigns it to that Ward's default department."
+  },
+  {
+    "question": "Which department resolves potholes and broken roads?",
+    "answer": "Road damages like potholes, cracked surfaces, and broken lanes are automatically routed to the Public Works Department (PWD)."
+  },
+  {
+    "question": "Who is responsible for water leakage and open sewers?",
+    "answer": "Water issues such as mains leakage, open sewers, or waterlogging are routed to Jal Sansadhan (Water Resources department) or the BMC Water division."
+  },
+  {
+    "question": "Who handles exposed wiring and electricity faults?",
+    "answer": "Dangerous electricity issues, including exposed high-tension lines, broken poles, and street wiring, are routed directly to Discom (the state electricity board)."
+  },
+  {
+    "question": "How do I rate the work once a complaint is resolved?",
+    "answer": "Once a complaint status changes to 'Resolved', you will see an interactive 1-5 star rating and feedback text area on your complaints tracker timeline where you can submit your satisfaction score."
+  },
+  {
+    "question": "What happens if my complaint has a low confidence AI classification?",
+    "answer": "If the AI's confidence in classifying the photo upload is below 75% (0.75), the complaint status is marked as 'Needs Review' and it is placed in the Nodal Admin Triage Queue. A human administrator will then manually review the description/photo and assign the correct department."
+  }
+]
